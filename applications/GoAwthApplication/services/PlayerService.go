@@ -5,8 +5,10 @@ import (
 	"github.com/google/uuid"
 	"github.com/mrkresnofatih/go-awth/entities"
 	"github.com/mrkresnofatih/go-awth/models"
+	"github.com/mrkresnofatih/go-awth/tools/jwt"
 	"gorm.io/gorm"
 	"log"
+	"time"
 )
 
 type IPlayerService interface {
@@ -20,12 +22,12 @@ type PlayerService struct {
 	GormClient *gorm.DB
 }
 
-func (p PlayerService) Get(playerGetRequest models.PlayerGetRequestModel) (models.PlayerGetResponseModel, error) {
-	targetPlayer := entities.PlayerEntity{
+func (p *PlayerService) Get(playerGetRequest models.PlayerGetRequestModel) (models.PlayerGetResponseModel, error) {
+	targetPlayer := entities.Player{
 		Username: playerGetRequest.Username,
 	}
-	err := p.GormClient.First(&targetPlayer)
-	if err != nil {
+	gormResponse := p.GormClient.First(&targetPlayer)
+	if gormResponse.Error != nil {
 		log.Println("error not found")
 		return *new(models.PlayerGetResponseModel), errors.New("player not found")
 	}
@@ -38,8 +40,8 @@ func (p PlayerService) Get(playerGetRequest models.PlayerGetRequestModel) (model
 	}, nil
 }
 
-func (p PlayerService) Signup(playerSignupRequest models.PlayerSignupRequestModel) (models.PlayerSignupResponseModel, error) {
-	newUser := entities.PlayerEntity{
+func (p *PlayerService) Signup(playerSignupRequest models.PlayerSignupRequestModel) (models.PlayerSignupResponseModel, error) {
+	newUser := entities.Player{
 		Username: playerSignupRequest.Username,
 		FullName: playerSignupRequest.FullName,
 		ImageUrl: playerSignupRequest.ImageUrl,
@@ -51,7 +53,8 @@ func (p PlayerService) Signup(playerSignupRequest models.PlayerSignupRequestMode
 	response := p.GormClient.Create(&newUser)
 	if response.Error != nil {
 		log.Println("error creating user")
-		return *new(models.PlayerSignupResponseModel), nil
+		log.Println(response.Error)
+		return *new(models.PlayerSignupResponseModel), errors.New("failed to create player")
 	}
 
 	log.Println("player signup success w/ new id: " + newUser.BaseDetails.Id)
@@ -61,13 +64,13 @@ func (p PlayerService) Signup(playerSignupRequest models.PlayerSignupRequestMode
 	}, nil
 }
 
-func (p PlayerService) Login(playerLoginRequest models.PlayerLoginRequestModel) (models.PlayerLoginResponseModel, error) {
-	targetPlayer := entities.PlayerEntity{
+func (p *PlayerService) Login(playerLoginRequest models.PlayerLoginRequestModel) (models.PlayerLoginResponseModel, error) {
+	targetPlayer := entities.Player{
 		Username: playerLoginRequest.Username,
 	}
-	err := p.GormClient.First(&targetPlayer)
-	if err != nil {
-		log.Println("error target player not found")
+	gormResponse := p.GormClient.First(&targetPlayer)
+	if gormResponse.Error != nil {
+		log.Println(gormResponse.Error)
 		return *new(models.PlayerLoginResponseModel), errors.New("failed To Find Player")
 	}
 
@@ -76,15 +79,28 @@ func (p PlayerService) Login(playerLoginRequest models.PlayerLoginRequestModel) 
 		return *new(models.PlayerLoginResponseModel), errors.New("incorrect password")
 	}
 
+	basicJwtBuilder := &jwt.BasicJwtTokenBuilder{
+		ExpiresAfter: time.Hour * 1,
+	}
+	usernameJwtBuilder := &jwt.UsernameJwtTokenBuilder{
+		JwtTokenBuilder: basicJwtBuilder,
+		Username:        targetPlayer.Username,
+	}
+	token, err := usernameJwtBuilder.Build()
+	if err != nil {
+		log.Println("error creating token")
+		return *new(models.PlayerLoginResponseModel), errors.New("failed creating token")
+	}
+
 	log.Println("login success")
 	return models.PlayerLoginResponseModel{
 		Username:    targetPlayer.Username,
-		AccessToken: "access-token",
+		AccessToken: token,
 	}, nil
 }
 
-func (p PlayerService) Update(playerUpdateRequest models.PlayerUpdateRequestModel) (models.PlayerUpdateResponseModel, error) {
-	targetPlayer := entities.PlayerEntity{
+func (p *PlayerService) Update(playerUpdateRequest models.PlayerUpdateRequestModel) (models.PlayerUpdateResponseModel, error) {
+	targetPlayer := entities.Player{
 		Username: playerUpdateRequest.Username,
 	}
 	err := p.GormClient.First(&targetPlayer)

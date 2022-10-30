@@ -1,0 +1,229 @@
+{
+	"info": {
+		"_postman_id": "7a2c272f-1f0a-408f-be9a-56ed8c17d931",
+		"name": "GoAwth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13142924"
+	},
+	"item": [
+		{
+			"name": "AuthorizationServer",
+			"item": [
+				{
+					"name": "Player",
+					"item": [
+						{
+							"name": "PlayerSignup",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"mrkresnofatih\",\r\n    \"fullName\": \"Kresno Fatih Imani\",\r\n    \"imageUrl\": \"https://i.pinimg.com/474x/e7/41/85/e74185538462b372d6e62791b399138f.jpg\",\r\n    \"password\": \"Pwd123#\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:1323/player/sign-up",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "1323",
+									"path": [
+										"player",
+										"sign-up"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PlayerValidateSignup",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "token",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"legion0001\",\r\n    \"fullName\": \"Kresno Fatih Imani\",\r\n    \"imageUrl\": \"https://i.pinimg.com/474x/e7/41/85/e74185538462b372d6e62791b399138f.jpg\",\r\n    \"password\": \"Pwd123#\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:1323/player/validate-sign-up",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "1323",
+									"path": [
+										"player",
+										"validate-sign-up"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PlayerLogin",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "token",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"legion0001\",\r\n    \"password\": \"Pwd123#\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:1323/player/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "1323",
+									"path": [
+										"player",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PlayerGetProfile",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmVzQXQiOiIyMDIyLTEwLTMwVDA5OjA4OjA3KzA3OjAwIiwidXNlcm5hbWUiOiJsZWdpb24wMDAxIn0.i7Ow6GbeBlHY01Fz2aP9mZpJYXPBa0mKm7-3cfx7u48",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:1323/player/get-my-profile",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "1323",
+									"path": [
+										"player",
+										"get-my-profile"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Developer",
+					"item": [
+						{
+							"name": "DeveloperSignup",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"developerName\": \"googlemldev0001\",\r\n    \"password\": \"Pwd123#\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:1323/developer/sign-up",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "1323",
+									"path": [
+										"developer",
+										"sign-up"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DeveloperLogin",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"developerName\": \"googlemldev0001\",\r\n    \"password\": \"Pwd123#\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:1323/developer/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "1323",
+									"path": [
+										"developer",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,7 +1,15 @@
 package main
 
-import "fmt"
+import (
+	"github.com/mrkresnofatih/go-awth/applications"
+	"github.com/mrkresnofatih/go-awth/controllers"
+	"sync"
+)
 
 func main() {
-	fmt.Println("hello world")
+	var appRunState sync.WaitGroup
+	appRunState.Add(1)
+	applications.RunGormMigration()
+	controllers.InitHttpServer(&appRunState)
+	appRunState.Wait()
 }
