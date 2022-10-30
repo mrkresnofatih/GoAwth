@@ -24,6 +24,13 @@ func InitHttpServer(appRunState *sync.WaitGroup) {
 		}
 		httpServerObj.AddController(developerController)
 
+		devAppsController := &DeveloperApplicationController{
+			DeveloperApplicationService: &services.DeveloperApplicationService{
+				GormClient: applications.GetGormMySqlInstance(),
+			},
+		}
+		httpServerObj.AddController(devAppsController)
+
 		httpServerObj.Initialize()
 		httpServerObj.Router.Logger.Fatal(httpServerObj.Router.Start(":1323"))
 		appRunState.Done()

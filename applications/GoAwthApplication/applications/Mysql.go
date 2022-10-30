@@ -28,4 +28,5 @@ func RunGormMigration() {
 	db := GetGormMySqlInstance()
 	db.AutoMigrate(&entities.Player{})
 	db.AutoMigrate(&entities.Developer{})
+	db.AutoMigrate(&entities.DeveloperApplication{})
 }

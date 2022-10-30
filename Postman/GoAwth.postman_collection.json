@@ -222,6 +222,89 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "DeveloperApplication",
+					"item": [
+						{
+							"name": "DeveloperApplicationCreate",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZlbG9wZXJOYW1lIjoiZ29vZ2xlbWxkZXYwMDAxIiwiZXhwaXJlc0F0IjoiMjAyMi0xMC0zMFQxMjo0MjoyOSswNzowMCJ9.YjIRwSRx-pRyq0dqkPT0xVkXq5ZNtiNVyUkcw2h4WQ8",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"developerName\": \"googlemldev0001\",\r\n    \"name\": \"myapp-2\",\r\n    \"logoUrl\": \"https://i.pinimg.com/736x/0d/cf/b5/0dcfb548989afdf22afff75e2a46a508.jpg\",\r\n    \"successRedirectUri\": \"http://localhost:3001/login/success\",\r\n    \"failedRedirectUri\": \"http://localhost:30001/login/failed\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:1323/dev-apps/create",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "1323",
+									"path": [
+										"dev-apps",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DeveloperApplicationList",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZlbG9wZXJOYW1lIjoiZ29vZ2xlbWxkZXYwMDAxIiwiZXhwaXJlc0F0IjoiMjAyMi0xMC0zMFQxMjo0MjoyOSswNzowMCJ9.YjIRwSRx-pRyq0dqkPT0xVkXq5ZNtiNVyUkcw2h4WQ8",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"developerName\": \"googlemldev0001\",\r\n    \"page\": 2,\r\n    \"pageSize\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:1323/dev-apps/list",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "1323",
+									"path": [
+										"dev-apps",
+										"list"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		}

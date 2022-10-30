@@ -76,6 +76,47 @@ func (r *RequireAuthenticationDecorator) Register(group *echo.Group) {
 	group.Match([]string{r.GetMethod()}, r.GetPath(), r.GetHandler())
 }
 
+type RequireDeveloperAccessDecorator struct {
+	Endpoint IEndpoint
+}
+
+func (r *RequireDeveloperAccessDecorator) GetHandler() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		authHeader := c.Request().Header.Get("Authorization")
+		if len(authHeader) < 7 {
+			log.Println("auth header not valid")
+			return models.SendBadResponse(c, "auth failed")
+		}
+
+		jwtToken := authHeader[7:] // removes bearer
+		isJwtTokenValid := jwt.GetValidityFromToken(jwtToken)
+		if !isJwtTokenValid {
+			return models.SendBadResponse(c, "auth failed")
+		}
+
+		developerName, err := jwt.GetClaimFromToken[string](jwtToken, jwt.ApplicationJwtClaimsKeyDeveloperName)
+		if err != nil {
+			log.Println("developerName claim not found")
+			return models.SendBadResponse(c, "Invalid developer access token")
+		}
+
+		log.Println("developer access granted: " + developerName)
+		return r.Endpoint.GetHandler()(c)
+	}
+}
+
+func (r *RequireDeveloperAccessDecorator) GetMethod() string {
+	return r.Endpoint.GetMethod()
+}
+
+func (r *RequireDeveloperAccessDecorator) GetPath() string {
+	return r.Endpoint.GetPath()
+}
+
+func (r *RequireDeveloperAccessDecorator) Register(group *echo.Group) {
+	group.Match([]string{r.GetMethod()}, r.GetPath(), r.GetHandler())
+}
+
 type RequireValidationDecorator[T interface{}] struct {
 	Endpoint IEndpoint
 }
