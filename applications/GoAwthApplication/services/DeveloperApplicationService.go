@@ -11,11 +11,35 @@ import (
 type IDeveloperApplicationService interface {
 	Create(createRequest models.DeveloperApplicationCreateRequestModel) (models.DeveloperApplicationGetResponseModel, error)
 	List(listRequest models.DeveloperApplicationListRequestModel) (models.DeveloperApplicationListResponseModel, error)
-	Get(getRequest models.DeveloperApplicationGetRequestModel) (models.DeveloperApplicationGetResponseModel, error)
+	Read(getRequest models.DeveloperApplicationReadRequestModel) (models.DeveloperApplicationReadResponseModel, error)
 }
 
 type DeveloperApplicationService struct {
 	GormClient *gorm.DB
+}
+
+func (d *DeveloperApplicationService) Read(getRequest models.DeveloperApplicationReadRequestModel) (models.DeveloperApplicationReadResponseModel, error) {
+	targetApp := entities.DeveloperApplication{
+		BaseDetails: entities.BaseEntity{
+			Id: getRequest.DeveloperApplicationId,
+		},
+	}
+	response := d.GormClient.First(&targetApp)
+	if response.Error != nil {
+		log.Println("error not found")
+		log.Println(response.Error.Error())
+		return *new(models.DeveloperApplicationReadResponseModel), nil
+	}
+
+	log.Println("found application")
+	return models.DeveloperApplicationReadResponseModel{
+		DeveloperApplicationId: targetApp.BaseDetails.Id,
+		DeveloperName:          targetApp.DeveloperName,
+		Name:                   targetApp.Name,
+		LogoUrl:                targetApp.LogoUrl,
+		SuccessRedirectUri:     targetApp.SuccessRedirectUri,
+		FailedRedirectUri:      targetApp.FailedRedirectUri,
+	}, nil
 }
 
 func (d *DeveloperApplicationService) Create(createRequest models.DeveloperApplicationCreateRequestModel) (models.DeveloperApplicationGetResponseModel, error) {
@@ -81,9 +105,4 @@ func (d *DeveloperApplicationService) List(listRequest models.DeveloperApplicati
 		DeveloperName: listRequest.DeveloperName,
 		Applications:  apps,
 	}, nil
-}
-
-func (d *DeveloperApplicationService) Get(getRequest models.DeveloperApplicationGetRequestModel) (models.DeveloperApplicationGetResponseModel, error) {
-	//TODO implement me
-	panic("implement me")
 }

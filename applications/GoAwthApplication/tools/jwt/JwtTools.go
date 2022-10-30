@@ -11,6 +11,7 @@ const applicationJwtSecret = "XETV82XMyGtMjCpJJZMqo1LCxjjYSkYdsIhtYfTsgiW4C9SPGe
 const applicationJwtClaimsKeyExpiresAt = "expiresAt"
 const ApplicationJwtClaimsKeyUsername = "username"
 const ApplicationJwtClaimsKeyDeveloperName = "developerName"
+const ApplicationJwtClaimsKeyRole = "role"
 
 type IJwtTokenBuilder interface {
 	GetClaims() *jwt.MapClaims
@@ -65,6 +66,30 @@ func (s *UsernameJwtTokenBuilder) Build() (string, error) {
 
 func (s *UsernameJwtTokenBuilder) GetClaims() *jwt.MapClaims {
 	return s.JwtTokenBuilder.GetClaims()
+}
+
+type PlayerRoleJwtTokenBuilder struct {
+	JwtTokenBuilder IJwtTokenBuilder
+}
+
+func (p *PlayerRoleJwtTokenBuilder) GetClaims() *jwt.MapClaims {
+	return p.JwtTokenBuilder.GetClaims()
+}
+
+func (p *PlayerRoleJwtTokenBuilder) initialize() {
+	p.JwtTokenBuilder.initialize()
+	claims := *(p.JwtTokenBuilder.GetClaims())
+	claims[ApplicationJwtClaimsKeyRole] = "PLAYER"
+}
+
+func (p *PlayerRoleJwtTokenBuilder) Build() (string, error) {
+	p.initialize()
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, p.JwtTokenBuilder.GetClaims())
+	tokenString, err := token.SignedString([]byte(applicationJwtSecret))
+	if err != nil {
+		return "", err
+	}
+	return tokenString, nil
 }
 
 type DeveloperNameJwtTokenBuilder struct {

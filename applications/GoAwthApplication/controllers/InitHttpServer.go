@@ -31,6 +31,21 @@ func InitHttpServer(appRunState *sync.WaitGroup) {
 		}
 		httpServerObj.AddController(devAppsController)
 
+		oauthController := &OauthController{
+			OauthService: &services.OauthService{
+				PlayerService: &services.PlayerService{
+					GormClient: applications.GetGormMySqlInstance(),
+				},
+				DeveloperApplicationService: &services.DeveloperApplicationService{
+					GormClient: applications.GetGormMySqlInstance(),
+				},
+				DeveloperApplicationGrantService: &services.DeveloperApplicationGrantService{
+					GormClient: applications.GetGormMySqlInstance(),
+				},
+			},
+		}
+		httpServerObj.AddController(oauthController)
+
 		httpServerObj.Initialize()
 		httpServerObj.Router.Logger.Fatal(httpServerObj.Router.Start(":1323"))
 		appRunState.Done()

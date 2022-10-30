@@ -26,7 +26,20 @@ func GetGormMySqlInstance() *gorm.DB {
 
 func RunGormMigration() {
 	db := GetGormMySqlInstance()
-	db.AutoMigrate(&entities.Player{})
-	db.AutoMigrate(&entities.Developer{})
-	db.AutoMigrate(&entities.DeveloperApplication{})
+	err := db.AutoMigrate(&entities.Player{})
+	if err != nil {
+		log.Fatalln(err)
+	}
+	err = db.AutoMigrate(&entities.Developer{})
+	if err != nil {
+		log.Fatalln(err)
+	}
+	err = db.AutoMigrate(&entities.DeveloperApplication{})
+	if err != nil {
+		log.Fatalln(err)
+	}
+	err = db.AutoMigrate(&entities.DeveloperApplicationGrant{})
+	if err != nil {
+		log.Fatalln(err)
+	}
 }

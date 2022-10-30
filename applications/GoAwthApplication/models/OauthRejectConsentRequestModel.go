@@ -1,5 +1,5 @@
 package models
 
-type DeveloperApplicationReadRequestModel struct {
+type OauthRejectConsentRequestModel struct {
 	DeveloperApplicationId string `json:"developerApplicationId" validate:"required"`
 }

@@ -86,7 +86,10 @@ func (p *PlayerService) Login(playerLoginRequest models.PlayerLoginRequestModel)
 		JwtTokenBuilder: basicJwtBuilder,
 		Username:        targetPlayer.Username,
 	}
-	token, err := usernameJwtBuilder.Build()
+	playerRoleJwtBuilder := &jwt.PlayerRoleJwtTokenBuilder{
+		JwtTokenBuilder: usernameJwtBuilder,
+	}
+	token, err := playerRoleJwtBuilder.Build()
 	if err != nil {
 		log.Println("error creating token")
 		return *new(models.PlayerLoginResponseModel), errors.New("failed creating token")

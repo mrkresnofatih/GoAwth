@@ -68,11 +68,66 @@ func (r *RequireAuthenticationDecorator) GetHandler() echo.HandlerFunc {
 		if !isJwtTokenValid {
 			return models.SendBadResponse(c, "auth failed")
 		}
+
+		username, err := jwt.GetClaimFromToken[string](jwtToken, jwt.ApplicationJwtClaimsKeyUsername)
+		if err != nil {
+			log.Println("developerName claim not found")
+			return models.SendBadResponse(c, "Invalid developer access token")
+		}
+
+		log.Println("access granted for username: " + username)
 		return r.Endpoint.GetHandler()(c)
 	}
 }
 
 func (r *RequireAuthenticationDecorator) Register(group *echo.Group) {
+	group.Match([]string{r.GetMethod()}, r.GetPath(), r.GetHandler())
+}
+
+type RequirePlayerAccessDecorator struct {
+	Endpoint IEndpoint
+}
+
+func (r *RequirePlayerAccessDecorator) GetHandler() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		authHeader := c.Request().Header.Get("Authorization")
+		if len(authHeader) < 7 {
+			log.Println("auth header not valid")
+			return models.SendBadResponse(c, "auth failed")
+		}
+
+		jwtToken := authHeader[7:] // removes bearer
+		isJwtTokenValid := jwt.GetValidityFromToken(jwtToken)
+		if !isJwtTokenValid {
+			return models.SendBadResponse(c, "auth failed")
+		}
+
+		username, err := jwt.GetClaimFromToken[string](jwtToken, jwt.ApplicationJwtClaimsKeyUsername)
+		if err != nil {
+			log.Println("userName claim not found")
+			return models.SendBadResponse(c, "Invalid player access token")
+		}
+
+		role, err := jwt.GetClaimFromToken[string](jwtToken, jwt.ApplicationJwtClaimsKeyRole)
+		if err != nil || role != "PLAYER" {
+			log.Println("role claim not found or role is not PLAYER")
+			return models.SendBadResponse(c, "Invalid player access token")
+		}
+
+		log.Println("access granted for username: " + username)
+		return r.Endpoint.GetHandler()(c)
+	}
+}
+
+func (r *RequirePlayerAccessDecorator) GetMethod() string {
+	return r.Endpoint.GetMethod()
+}
+
+func (r *RequirePlayerAccessDecorator) GetPath() string {
+	return r.Endpoint.GetPath()
+}
+
+func (r *RequirePlayerAccessDecorator) Register(group *echo.Group) {
 	group.Match([]string{r.GetMethod()}, r.GetPath(), r.GetHandler())
 }
 

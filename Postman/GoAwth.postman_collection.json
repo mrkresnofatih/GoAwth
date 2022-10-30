@@ -22,7 +22,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"username\": \"mrkresnofatih\",\r\n    \"fullName\": \"Kresno Fatih Imani\",\r\n    \"imageUrl\": \"https://i.pinimg.com/474x/e7/41/85/e74185538462b372d6e62791b399138f.jpg\",\r\n    \"password\": \"Pwd123#\"\r\n}",
+									"raw": "{\r\n    \"username\": \"legion0001\",\r\n    \"fullName\": \"Kresno Fatih Imani\",\r\n    \"imageUrl\": \"https://i.pinimg.com/474x/e7/41/85/e74185538462b372d6e62791b399138f.jpg\",\r\n    \"password\": \"Pwd123#\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -234,7 +234,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZlbG9wZXJOYW1lIjoiZ29vZ2xlbWxkZXYwMDAxIiwiZXhwaXJlc0F0IjoiMjAyMi0xMC0zMFQxMjo0MjoyOSswNzowMCJ9.YjIRwSRx-pRyq0dqkPT0xVkXq5ZNtiNVyUkcw2h4WQ8",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZlbG9wZXJOYW1lIjoiZ29vZ2xlbWxkZXYwMDAxIiwiZXhwaXJlc0F0IjoiMjAyMi0xMC0zMFQxOTo1NDozOCswNzowMCJ9.2Cokat3JgPoimwwR8r9q2TGGe1fxMhgRqMb4YQ6PAQY",
 											"type": "string"
 										}
 									]
@@ -243,7 +243,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"developerName\": \"googlemldev0001\",\r\n    \"name\": \"myapp-2\",\r\n    \"logoUrl\": \"https://i.pinimg.com/736x/0d/cf/b5/0dcfb548989afdf22afff75e2a46a508.jpg\",\r\n    \"successRedirectUri\": \"http://localhost:3001/login/success\",\r\n    \"failedRedirectUri\": \"http://localhost:30001/login/failed\"\r\n}",
+									"raw": "{\r\n    \"developerName\": \"googlemldev0001\",\r\n    \"name\": \"myapp-1\",\r\n    \"logoUrl\": \"https://i.pinimg.com/736x/0d/cf/b5/0dcfb548989afdf22afff75e2a46a508.jpg\",\r\n    \"successRedirectUri\": \"http://localhost:3001/login/success\",\r\n    \"failedRedirectUri\": \"http://localhost:30001/login/failed\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -273,7 +273,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZlbG9wZXJOYW1lIjoiZ29vZ2xlbWxkZXYwMDAxIiwiZXhwaXJlc0F0IjoiMjAyMi0xMC0zMFQxMjo0MjoyOSswNzowMCJ9.YjIRwSRx-pRyq0dqkPT0xVkXq5ZNtiNVyUkcw2h4WQ8",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZlbG9wZXJOYW1lIjoiZ29vZ2xlbWxkZXYwMDAxIiwiZXhwaXJlc0F0IjoiMjAyMi0xMC0zMFQxOTo1NDozOCswNzowMCJ9.2Cokat3JgPoimwwR8r9q2TGGe1fxMhgRqMb4YQ6PAQY",
 											"type": "string"
 										}
 									]
@@ -282,7 +282,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"developerName\": \"googlemldev0001\",\r\n    \"page\": 2,\r\n    \"pageSize\": 2\r\n}",
+									"raw": "{\r\n    \"developerName\": \"googlemldev0001\",\r\n    \"page\": 1,\r\n    \"pageSize\": 5\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -299,6 +299,128 @@
 									"path": [
 										"dev-apps",
 										"list"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Oauth",
+					"item": [
+						{
+							"name": "OauthGetConsent",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmVzQXQiOiIyMDIyLTEwLTMwVDE5OjU0OjI0KzA3OjAwIiwicm9sZSI6IlBMQVlFUiIsInVzZXJuYW1lIjoibGVnaW9uMDAwMSJ9.xXCbHHNdE5grxThH7f5Kxqqf9k66dPUqQ447pPhILkQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"developerApplicationId\": \"37b09c80-38cc-4603-94c8-9740868cba7a\",\r\n    \"scope\": \"openid\",\r\n    \"grantType\": \"grantId\",\r\n    \"playerUsername\": \"legion0001\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:1323/oauth2/get-consent",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "1323",
+									"path": [
+										"oauth2",
+										"get-consent"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "OauthAgreeConsent",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmVzQXQiOiIyMDIyLTEwLTMwVDE5OjU0OjI0KzA3OjAwIiwicm9sZSI6IlBMQVlFUiIsInVzZXJuYW1lIjoibGVnaW9uMDAwMSJ9.xXCbHHNdE5grxThH7f5Kxqqf9k66dPUqQ447pPhILkQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"developerApplicationId\": \"37b09c80-38cc-4603-94c8-9740868cba7a\",\r\n    \"scope\": \"openid\",\r\n    \"grantType\": \"grantId\",\r\n    \"playerUsername\": \"legion0001\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:1323/oauth2/agree-consent",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "1323",
+									"path": [
+										"oauth2",
+										"agree-consent"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "OauthRejectConsent",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmVzQXQiOiIyMDIyLTEwLTMwVDE5OjQxOjU0KzA3OjAwIiwicm9sZSI6IlBMQVlFUiIsInVzZXJuYW1lIjoibGVnaW9uMDAwMSJ9._iNDfH4OUxGCWpCG6xvzEeiO4N1c5ByvuRnnpkrXB4s",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"developerApplicationId\": \"3a9dfc87-806e-4b67-b226-e3a668a8bd47\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:1323/oauth2/reject-consent",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "1323",
+									"path": [
+										"oauth2",
+										"reject-consent"
 									]
 								}
 							},
