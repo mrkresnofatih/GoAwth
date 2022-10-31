@@ -1,6 +1,7 @@
 package services
 
 import (
+	"errors"
 	"github.com/google/uuid"
 	"github.com/mrkresnofatih/go-awth/entities"
 	"github.com/mrkresnofatih/go-awth/models"
@@ -28,7 +29,7 @@ func (d *DeveloperApplicationService) Read(getRequest models.DeveloperApplicatio
 	if response.Error != nil {
 		log.Println("error not found")
 		log.Println(response.Error.Error())
-		return *new(models.DeveloperApplicationReadResponseModel), nil
+		return *new(models.DeveloperApplicationReadResponseModel), errors.New("developer app not found")
 	}
 
 	log.Println("found application")
@@ -39,6 +40,7 @@ func (d *DeveloperApplicationService) Read(getRequest models.DeveloperApplicatio
 		LogoUrl:                targetApp.LogoUrl,
 		SuccessRedirectUri:     targetApp.SuccessRedirectUri,
 		FailedRedirectUri:      targetApp.FailedRedirectUri,
+		Secret:                 targetApp.Secret,
 	}, nil
 }
 
@@ -58,7 +60,7 @@ func (d *DeveloperApplicationService) Create(createRequest models.DeveloperAppli
 	if response.Error != nil {
 		log.Println("failed to save dev app to db")
 		log.Println(response.Error.Error())
-		return *new(models.DeveloperApplicationGetResponseModel), nil
+		return *new(models.DeveloperApplicationGetResponseModel), errors.New("failed to save dev app to db")
 	}
 
 	log.Println("dev app created!")
@@ -82,7 +84,7 @@ func (d *DeveloperApplicationService) List(listRequest models.DeveloperApplicati
 	}).First(&targetDeveloper)
 	if gormResponse.Error != nil {
 		log.Println("find developer w/ paginated dev apps failed")
-		return *new(models.DeveloperApplicationListResponseModel), nil
+		return *new(models.DeveloperApplicationListResponseModel), errors.New("dev app query failed")
 	}
 
 	log.Println(len(targetDeveloper.DeveloperApplications))

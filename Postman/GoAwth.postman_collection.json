@@ -317,7 +317,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmVzQXQiOiIyMDIyLTEwLTMwVDE5OjU0OjI0KzA3OjAwIiwicm9sZSI6IlBMQVlFUiIsInVzZXJuYW1lIjoibGVnaW9uMDAwMSJ9.xXCbHHNdE5grxThH7f5Kxqqf9k66dPUqQ447pPhILkQ",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmVzQXQiOiIyMDIyLTEwLTMxVDA4OjI4OjAwKzA3OjAwIiwicm9sZSI6IlBMQVlFUiIsInVzZXJuYW1lIjoibGVnaW9uMDAwMSJ9.NO58mtLRiROtH_OyMkYQG3OKTj9ZAQjyDBs4I_DIL8Y",
 											"type": "string"
 										}
 									]
@@ -356,7 +356,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmVzQXQiOiIyMDIyLTEwLTMwVDE5OjU0OjI0KzA3OjAwIiwicm9sZSI6IlBMQVlFUiIsInVzZXJuYW1lIjoibGVnaW9uMDAwMSJ9.xXCbHHNdE5grxThH7f5Kxqqf9k66dPUqQ447pPhILkQ",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmVzQXQiOiIyMDIyLTEwLTMxVDA4OjI4OjAwKzA3OjAwIiwicm9sZSI6IlBMQVlFUiIsInVzZXJuYW1lIjoibGVnaW9uMDAwMSJ9.NO58mtLRiROtH_OyMkYQG3OKTj9ZAQjyDBs4I_DIL8Y",
 											"type": "string"
 										}
 									]
@@ -421,6 +421,38 @@
 									"path": [
 										"oauth2",
 										"reject-consent"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "OauthAuthenticateGrant",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"grantId\": \"f4428276-ff74-415c-a0b4-689c041a79b5\",\r\n    \"applicationId\": \"37b09c80-38cc-4603-94c8-9740868cba7a\",\r\n    \"applicationSecret\": \"2e13c8f6-16ac-4c8a-9b6e-ce02d6d428f6\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:1323/oauth2/authenticate-grant",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "1323",
+									"path": [
+										"oauth2",
+										"authenticate-grant"
 									]
 								}
 							},

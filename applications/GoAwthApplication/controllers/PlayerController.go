@@ -39,8 +39,9 @@ func (p *PlayerController) Register(echo *echo.Echo) {
 	playerGetProfileEndpoint := &playerEndpoints.PlayerGetMyProfileEndpoint{
 		PlayerService: p.PlayerService,
 	}
-	playerGetProfileWithAuth := &RequireAuthenticationDecorator{
-		Endpoint: playerGetProfileEndpoint,
+	playerGetProfileWithAuth := &RequireAuthorizationDecorator{
+		Endpoint:    playerGetProfileEndpoint,
+		OauthScopes: []string{services.ScopeName_OpenID},
 	}
 	controllerRouter.AddEndpoint(playerGetProfileWithAuth)
 

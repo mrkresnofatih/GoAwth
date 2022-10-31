@@ -1,6 +1,7 @@
 package services
 
 import (
+	"errors"
 	"github.com/google/uuid"
 	"github.com/mrkresnofatih/go-awth/entities"
 	"github.com/mrkresnofatih/go-awth/models"
@@ -31,7 +32,7 @@ func (d *DeveloperApplicationGrantService) Create(developerAppGrantCreateReq mod
 	if response.Error != nil {
 		log.Println("error creating dev-app-grant")
 		log.Println(response.Error.Error())
-		return *new(models.DeveloperAppGrantCreateResponseModel), nil
+		return *new(models.DeveloperAppGrantCreateResponseModel), errors.New("error creating dev-app grant")
 	}
 
 	log.Println("create dev-app-grant")
@@ -53,7 +54,7 @@ func (d *DeveloperApplicationGrantService) Get(developerAppGrantGetReq models.De
 	gormResponse := d.GormClient.First(&targetGrant)
 	if gormResponse.Error != nil {
 		log.Println("error not found")
-		return *new(models.DeveloperAppGrantGetResponseModel), nil
+		return *new(models.DeveloperAppGrantGetResponseModel), errors.New("error not found")
 	}
 
 	log.Println("successfully found grant")

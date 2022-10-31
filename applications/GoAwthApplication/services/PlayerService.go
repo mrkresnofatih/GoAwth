@@ -109,7 +109,7 @@ func (p *PlayerService) Update(playerUpdateRequest models.PlayerUpdateRequestMod
 	err := p.GormClient.First(&targetPlayer)
 	if err != nil {
 		log.Println("player for update not found")
-		return *new(models.PlayerUpdateResponseModel), nil
+		return *new(models.PlayerUpdateResponseModel), errors.New("player for update not found")
 	}
 
 	targetPlayer.FullName = playerUpdateRequest.FullName
@@ -119,7 +119,7 @@ func (p *PlayerService) Update(playerUpdateRequest models.PlayerUpdateRequestMod
 	response := p.GormClient.Save(&targetPlayer)
 	if response.Error != nil {
 		log.Println("error saving target player")
-		return *new(models.PlayerUpdateResponseModel), nil
+		return *new(models.PlayerUpdateResponseModel), errors.New("save player failed")
 	}
 
 	log.Println("finish updating target player")

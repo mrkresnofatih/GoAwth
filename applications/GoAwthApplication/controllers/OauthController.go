@@ -50,5 +50,13 @@ func (o *OauthController) Register(echo *echo.Echo) {
 	}
 	controllerRouter.AddEndpoint(rejectConsentWithPlayerRole)
 
+	authGrantEndpoint := &oauthEndpoints.OauthAuthenticateGrantEndpoint{
+		OauthService: o.OauthService,
+	}
+	authGrantWithValidation := &RequireValidationDecorator[models.OauthAuthenticateGrantRequestModel]{
+		Endpoint: authGrantEndpoint,
+	}
+	controllerRouter.AddEndpoint(authGrantWithValidation)
+
 	controllerRouter.Build()
 }

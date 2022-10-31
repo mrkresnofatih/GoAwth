@@ -12,6 +12,8 @@ const applicationJwtClaimsKeyExpiresAt = "expiresAt"
 const ApplicationJwtClaimsKeyUsername = "username"
 const ApplicationJwtClaimsKeyDeveloperName = "developerName"
 const ApplicationJwtClaimsKeyRole = "role"
+const ApplicationJwtClaimsKeyGrantId = "grantId"
+const ApplicationJwtClaimsKeyGrantScopes = "grantScopes"
 
 type IJwtTokenBuilder interface {
 	GetClaims() *jwt.MapClaims
@@ -110,6 +112,33 @@ func (d *DeveloperNameJwtTokenBuilder) initialize() {
 func (d *DeveloperNameJwtTokenBuilder) Build() (string, error) {
 	d.initialize()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, d.JwtTokenBuilder.GetClaims())
+	tokenString, err := token.SignedString([]byte(applicationJwtSecret))
+	if err != nil {
+		return "", err
+	}
+	return tokenString, nil
+}
+
+type ApplicationJwtTokenBuilder struct {
+	JwtTokenBuilder IJwtTokenBuilder
+	GrantId         string
+	GrantScopes     string
+}
+
+func (a *ApplicationJwtTokenBuilder) GetClaims() *jwt.MapClaims {
+	return a.JwtTokenBuilder.GetClaims()
+}
+
+func (a *ApplicationJwtTokenBuilder) initialize() {
+	a.JwtTokenBuilder.initialize()
+	claims := *(a.JwtTokenBuilder.GetClaims())
+	claims[ApplicationJwtClaimsKeyGrantId] = a.GrantId
+	claims[ApplicationJwtClaimsKeyGrantScopes] = a.GrantScopes
+}
+
+func (a *ApplicationJwtTokenBuilder) Build() (string, error) {
+	a.initialize()
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, a.JwtTokenBuilder.GetClaims())
 	tokenString, err := token.SignedString([]byte(applicationJwtSecret))
 	if err != nil {
 		return "", err

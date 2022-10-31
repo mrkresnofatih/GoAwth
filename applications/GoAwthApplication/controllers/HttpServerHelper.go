@@ -3,12 +3,14 @@ package controllers
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	validator2 "github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 	"github.com/mrkresnofatih/go-awth/models"
 	"github.com/mrkresnofatih/go-awth/tools/jwt"
 	"io"
 	"log"
+	"strings"
 )
 
 type IServer interface {
@@ -43,19 +45,20 @@ type IEndpoint interface {
 	Register(group *echo.Group)
 }
 
-type RequireAuthenticationDecorator struct {
-	Endpoint IEndpoint
+type RequireAuthorizationDecorator struct {
+	Endpoint    IEndpoint
+	OauthScopes []string
 }
 
-func (r *RequireAuthenticationDecorator) GetPath() string {
+func (r *RequireAuthorizationDecorator) GetPath() string {
 	return r.Endpoint.GetPath()
 }
 
-func (r *RequireAuthenticationDecorator) GetMethod() string {
+func (r *RequireAuthorizationDecorator) GetMethod() string {
 	return r.Endpoint.GetMethod()
 }
 
-func (r *RequireAuthenticationDecorator) GetHandler() echo.HandlerFunc {
+func (r *RequireAuthorizationDecorator) GetHandler() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		authHeader := c.Request().Header.Get("Authorization")
 		if len(authHeader) < 7 {
@@ -71,8 +74,32 @@ func (r *RequireAuthenticationDecorator) GetHandler() echo.HandlerFunc {
 
 		username, err := jwt.GetClaimFromToken[string](jwtToken, jwt.ApplicationJwtClaimsKeyUsername)
 		if err != nil {
-			log.Println("developerName claim not found")
-			return models.SendBadResponse(c, "Invalid developer access token")
+			log.Println("username claim not found")
+			return models.SendBadResponse(c, "Invalid player access token")
+		}
+
+		tokenGrantId, err := jwt.GetClaimFromToken[string](jwtToken, jwt.ApplicationJwtClaimsKeyGrantId)
+		if err == nil {
+			log.Println(fmt.Sprintf("token is a granted app token w/ id: %s", tokenGrantId))
+
+			tokenScopes, err := jwt.GetClaimFromToken[string](jwtToken, jwt.ApplicationJwtClaimsKeyGrantScopes)
+			if err != nil {
+				log.Println("granted app token but does not have token scopes")
+				return models.SendBadResponse(c, "granted app token but does not have token scopes")
+			}
+
+			tokenSplits := strings.Fields(tokenScopes)
+			tokenSplitsMap := map[string]bool{}
+			for _, tokenScopeSplit := range tokenSplits {
+				tokenSplitsMap[tokenScopeSplit] = true
+			}
+
+			for _, oauthScope := range r.OauthScopes {
+				if _, ok := tokenSplitsMap[oauthScope]; !ok {
+					log.Println("token doesn't have oauth scope: " + oauthScope)
+					return models.SendBadResponse(c, "unauthorized")
+				}
+			}
 		}
 
 		log.Println("access granted for username: " + username)
@@ -80,7 +107,7 @@ func (r *RequireAuthenticationDecorator) GetHandler() echo.HandlerFunc {
 	}
 }
 
-func (r *RequireAuthenticationDecorator) Register(group *echo.Group) {
+func (r *RequireAuthorizationDecorator) Register(group *echo.Group) {
 	group.Match([]string{r.GetMethod()}, r.GetPath(), r.GetHandler())
 }
 

@@ -7,4 +7,5 @@ type DeveloperApplicationReadResponseModel struct {
 	LogoUrl                string `json:"logoUrl"`
 	SuccessRedirectUri     string `json:"successRedirectUri"`
 	FailedRedirectUri      string `json:"failedRedirectUri"`
+	Secret                 string `json:"secret"`
 }
