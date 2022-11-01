@@ -98,29 +98,6 @@ const playerStyles = {
         flex-direction: column;
         width: 400px;
     `,
-    loginBox: css`
-        height: 100%;
-        background-color: rgb(25,25,25);
-        padding: 24px;
-        border-top: 10px solid #4CAF50;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    `,
-    loginTitle: css`
-        font-size: 48px;
-        font-weight: 600;
-    `,
-    loginSubtitle: css`
-        font-size: 18px;
-        font-weight: 200;
-    `,
-    loginDivider: css`
-        border-top: 1px solid grey;
-        width: 250px;
-        margin-top: 20px;
-    `,
     loginAlt: css`
         margin-top: 20px;
         font-size: 14px;
