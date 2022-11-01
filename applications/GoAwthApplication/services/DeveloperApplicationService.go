@@ -81,7 +81,7 @@ func (d *DeveloperApplicationService) List(listRequest models.DeveloperApplicati
 	}
 	gormResponse := d.GormClient.Model(&entities.Developer{}).Preload("DeveloperApplications", func(db *gorm.DB) *gorm.DB {
 		return db.Offset(listRequest.PageSize * (listRequest.Page - 1)).Limit(listRequest.PageSize)
-	}).First(&targetDeveloper)
+	}).Where(&entities.Developer{DeveloperName: listRequest.DeveloperName}).First(&targetDeveloper)
 	if gormResponse.Error != nil {
 		log.Println("find developer w/ paginated dev apps failed")
 		return *new(models.DeveloperApplicationListResponseModel), errors.New("dev app query failed")

@@ -17,6 +17,8 @@ func (d *DeveloperLoginEndpoint) GetHandler() echo.HandlerFunc {
 		loginReq := new(models.DeveloperLoginRequestModel)
 		_ = c.Bind(loginReq)
 
+		log.Println(loginReq.DeveloperName)
+
 		devLoginResponse, err := d.DeveloperService.Login(*loginReq)
 		if err != nil {
 			log.Println("failed to login developer account")

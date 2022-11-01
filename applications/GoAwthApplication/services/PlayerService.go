@@ -26,7 +26,7 @@ func (p *PlayerService) Get(playerGetRequest models.PlayerGetRequestModel) (mode
 	targetPlayer := entities.Player{
 		Username: playerGetRequest.Username,
 	}
-	gormResponse := p.GormClient.First(&targetPlayer)
+	gormResponse := p.GormClient.Where(&entities.Player{Username: playerGetRequest.Username}).First(&targetPlayer)
 	if gormResponse.Error != nil {
 		log.Println("error not found")
 		return *new(models.PlayerGetResponseModel), errors.New("player not found")
@@ -68,7 +68,7 @@ func (p *PlayerService) Login(playerLoginRequest models.PlayerLoginRequestModel)
 	targetPlayer := entities.Player{
 		Username: playerLoginRequest.Username,
 	}
-	gormResponse := p.GormClient.First(&targetPlayer)
+	gormResponse := p.GormClient.Where(&entities.Player{Username: playerLoginRequest.Username}).First(&targetPlayer)
 	if gormResponse.Error != nil {
 		log.Println(gormResponse.Error)
 		return *new(models.PlayerLoginResponseModel), errors.New("failed To Find Player")
@@ -106,7 +106,7 @@ func (p *PlayerService) Update(playerUpdateRequest models.PlayerUpdateRequestMod
 	targetPlayer := entities.Player{
 		Username: playerUpdateRequest.Username,
 	}
-	err := p.GormClient.First(&targetPlayer)
+	err := p.GormClient.Where(&entities.Player{Username: playerUpdateRequest.Username}).First(&targetPlayer)
 	if err != nil {
 		log.Println("player for update not found")
 		return *new(models.PlayerUpdateResponseModel), errors.New("player for update not found")

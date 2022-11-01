@@ -45,7 +45,10 @@ func (d *DeveloperService) Login(developerLoginRequest models.DeveloperLoginRequ
 	targetDeveloper := entities.Developer{
 		DeveloperName: developerLoginRequest.DeveloperName,
 	}
-	gormResponse := d.GormClient.First(&targetDeveloper)
+	gormResponse := d.
+		GormClient.
+		Where(&entities.Developer{DeveloperName: developerLoginRequest.DeveloperName}).
+		First(&targetDeveloper)
 	if gormResponse.Error != nil {
 		log.Println(gormResponse.Error)
 		return *new(models.DeveloperLoginResponseModel), errors.New("failed to find developer")
