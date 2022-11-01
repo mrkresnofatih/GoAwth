@@ -6,6 +6,7 @@ import (
 	"fmt"
 	validator2 "github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"github.com/mrkresnofatih/go-awth/models"
 	"github.com/mrkresnofatih/go-awth/tools/jwt"
 	"io"
@@ -25,6 +26,12 @@ type ApplicationServer struct {
 
 func (a *ApplicationServer) Initialize() {
 	a.Router = echo.New()
+	a.Router.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowMethods:     []string{"*"},
+		AllowHeaders:     []string{"*"},
+		AllowCredentials: true,
+		AllowOrigins:     []string{"*"},
+	}))
 	for _, controller := range a.Controllers {
 		controller.Register(a.Router)
 	}

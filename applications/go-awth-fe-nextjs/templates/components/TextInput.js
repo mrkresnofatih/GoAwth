@@ -1,13 +1,15 @@
 import { css } from '@emotion/css'
 import React from 'react'
 
-const TextInput = ({placeholder, password, style}) => {
+const TextInput = ({placeholder, password, style, onChange, value}) => {
     return (
         <input 
           placeholder={placeholder} 
           className={textInputStyle.body}
           type={password ? "password" : "text"}
+          onChange={onChange}
           style={style}
+          value={value}
         />
       )
 }
