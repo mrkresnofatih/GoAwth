@@ -224,9 +224,23 @@ const DeveloperPortal = ({developerToken, developerName}) => {
     const [devApps, setDevApps] = useState(undefined)
     const [activeIndex, setActiveIndex] = useState(0)
 
+    const [newAppName, setNewAppName] = useState("")
+    const [newLogoUrl, setNewLogoUrl] = useState("")
+    const [newSuccessUri, setNewSuccessUri] = useState("")
+    const [newFailUri, setNewFailUri] = useState("")
+
+    const [createAppApiCallCounter, setCreateAppCount] = useState(0)
+
+    const resetForm = () => {
+        setNewAppName("")
+        setNewLogoUrl("")
+        setNewSuccessUri("")
+        setNewFailUri("")
+    }
+
     useEffect(() => {
         devAppsListApi({developerName, developerToken}, (data) => setDevApps(data))
-    }, [developerName, developerToken])
+    }, [developerName, developerToken, createAppApiCallCounter])
 
     if (devApps === undefined) {
         return <></>
@@ -276,7 +290,56 @@ const DeveloperPortal = ({developerToken, developerName}) => {
                 </div>
             </div>
             <div className={developerPortalStyles.formBody}>
-                <p>create new app form</p>
+                <div className={developerPortalStyles.formBox}>
+                    <h3 className={developerPortalStyles.formTitle}>Create App.</h3>
+                    <h3 className={developerPortalStyles.formSubtitle}>Create a new oauth2 app</h3>
+                    <div className={developerPortalStyles.formDivider} />
+                    <TextInput
+                        password={false}
+                        placeholder="AppName"
+                        style={{width: 225}}
+                        onChange={(e) => setNewAppName(e.target.value)}
+                        value={newAppName}
+                    />
+                    <TextInput
+                        password={false}
+                        placeholder="LogoUrl"
+                        style={{width: 225}}
+                        onChange={(e) => setNewLogoUrl(e.target.value)}
+                        value={newLogoUrl}
+                    />
+                    <TextInput
+                        password={false}
+                        placeholder="SuccessRedirectUri"
+                        style={{width: 225}}
+                        onChange={(e) => setNewSuccessUri(e.target.value)}
+                        value={newSuccessUri}
+                    />
+                    <TextInput
+                        password={false}
+                        placeholder="FailRedirectUri"
+                        style={{width: 225}}
+                        onChange={(e) => setNewFailUri(e.target.value)}
+                        value={newFailUri}
+                    />
+                    <AppButton 
+                        text={"Create"} 
+                        style={{marginTop: 20, width: 215}} 
+                        onClick={() => {
+                            devAppsCreateApi({
+                                developerName,
+                                developerToken,
+                                name: newAppName,
+                                logoUrl: newLogoUrl,
+                                successRedirectUri: newSuccessUri,
+                                failedRedirectUri: newFailUri
+                            }, () => {
+                                resetForm()
+                                setCreateAppCount(i => i +1)
+                            })
+                        }}
+                    />
+                </div>
             </div>
         </div>
     )
@@ -313,6 +376,14 @@ const developerPortalStyles = {
         justify-content: right;
         background-color: rgb(15,15,15);
         flex: 0.7;
+
+        -ms-overflow-style: none; /* for Internet Explorer, Edge */
+        scrollbar-width: none; /* for Firefox */
+        overflow-x: scroll; 
+
+        ::-webkit-scrollbar {
+            display: none; /* for Chrome, Safari, and Opera */
+        }
     `,
     formBody: css`
         padding: 24px;
@@ -320,6 +391,29 @@ const developerPortalStyles = {
         flex-direction: column;
         width: 400px;
     `,
+    formBox: css`
+        height: 100%;
+        background-color: rgb(25,25,25);
+        padding: 24px;
+        border-top: 10px solid #4CAF50;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    `,
+    formTitle: css`
+        font-size: 48px;
+        font-weight: 600;
+    `,
+    formSubtitle: css`
+        font-size: 18px;
+        font-weight: 200;
+    `,
+    formDivider: css`
+        border-top: 1px solid grey;
+        width: 250px;
+        margin-top: 20px;
+    `
 }
 
 const devAppsListApi = ({developerName, developerToken}, callback) => {
@@ -336,5 +430,31 @@ const devAppsListApi = ({developerName, developerToken}, callback) => {
         callback(response.data.data)
     }).catch((response) => {
         console.log(response)
+    })
+}
+
+const devAppsCreateApi = ({
+    developerName, 
+    developerToken, 
+    name,
+    logoUrl,
+    successRedirectUri,
+    failedRedirectUri
+}, callback) => {
+    axios.post("http://localhost:1323/dev-apps/create", {
+        developerName,
+        name,
+        logoUrl,
+        successRedirectUri,
+        failedRedirectUri
+    }, {
+        headers: {
+            "Authorization": `Bearer ${developerToken}`
+        }
+    }).then((response) => {
+        console.log(response.data)
+        callback(response.data.data)
+    }).catch((response) => {
+        console.log(response.data)
     })
 }
