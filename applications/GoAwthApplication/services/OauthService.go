@@ -196,5 +196,5 @@ func filterKnownScopes(scope string) string {
 }
 
 func buildSuccessUri(redirectUri, grantId string) string {
-	return fmt.Sprintf("%s?grantId=%s", redirectUri, grantId)
+	return fmt.Sprintf("%s?grantid=%s", redirectUri, grantId)
 }

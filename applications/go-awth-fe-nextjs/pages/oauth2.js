@@ -90,6 +90,17 @@ const oauth2 = () => {
                                 <AppButton
                                     text={"Agree"} 
                                     style={{marginTop: 20, width: 200}} 
+                                    onClick={() => {
+                                        oauthAgreeConsentApi({
+                                            applicationId: router.query.applicationid,
+                                            scope: router.query.scopes,
+                                            grantType: router.query.granttype,
+                                            playerUsername: username,
+                                            token: token,
+                                        }, (data) => {
+                                            window.location.replace(data.redirectUri)
+                                        })
+                                    }}
                                 />
                                 <AppButton
                                     text={"Cancel"} 
@@ -182,6 +193,30 @@ const oauthGetConsentApi = ({applicationId, scope, grantType, playerUsername, to
     console.log(reqBody, reqHeader)
     
     axios.post("http://localhost:1323/oauth2/get-consent", reqBody, reqHeader)
+    .then((response) => {
+        console.log(response.data)
+        callback(response.data.data)
+    }).catch((response) => {
+        console.log(response)
+    })
+}
+
+const oauthAgreeConsentApi = ({applicationId, scope, grantType, playerUsername, token}, callback) => {
+    const reqBody = {
+        developerApplicationId: applicationId,
+        scope,
+        grantType,
+        playerUsername
+    }
+    const reqHeader = {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    }
+
+    console.log(reqBody, reqHeader)
+    
+    axios.post("http://localhost:1323/oauth2/agree-consent", reqBody, reqHeader)
     .then((response) => {
         console.log(response.data)
         callback(response.data.data)
